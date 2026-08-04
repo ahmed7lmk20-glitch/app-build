@@ -20,17 +20,17 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.24.x'
           channel: 'stable'
 
       - name: Unzip project
         run: |
           unzip -o account_recovery_consultant.zip -d extracted_app
 
-      - name: Install dependencies
+      - name: Force Fix Dependencies & Install
         run: |
           PROJECT_DIR=$(find extracted_app -name "pubspec.yaml" -exec dirname {} \;)
           cd "$PROJECT_DIR"
+          echo -e "\ndependency_overrides:\n  collection: ^1.18.0" >> pubspec.yaml
           flutter pub get
 
       - name: Build AAB
