@@ -30,8 +30,8 @@ jobs:
         run: |
           PROJECT_DIR=$(find extracted_app -name "pubspec.yaml" -exec dirname {} \;)
           cd "$PROJECT_DIR"
-          flutter pub get --ignore-deprecation
-          flutter build appbundle --release --no-codesign --no-pub
+          flutter pub get
+          flutter build appbundle --release --no-codesign
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
