@@ -26,12 +26,12 @@ jobs:
         run: |
           unzip -o account_recovery_consultant.zip -d extracted_app
 
-      - name: Resolve Dependencies & Build AAB
+      - name: Build AAB
         run: |
           PROJECT_DIR=$(find extracted_app -name "pubspec.yaml" -exec dirname {} \;)
           cd "$PROJECT_DIR"
           flutter pub get
-          flutter build appbundle --release --no-codesign
+          flutter build appbundle --release
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
