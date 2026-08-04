@@ -26,10 +26,17 @@ jobs:
         run: |
           unzip -o account_recovery_consultant.zip -d extracted_app
 
-      - name: Build AAB
+      - name: Fix Dependencies & Build AAB
         run: |
           PROJECT_DIR=$(find extracted_app -name "pubspec.yaml" -exec dirname {} \;)
           cd "$PROJECT_DIR"
+          
+          cat <<EOF >> pubspec.yaml
+          
+          dependency_overrides:
+            collection: ^1.18.0
+          EOF
+          
           flutter pub get
           flutter build appbundle --release
 
