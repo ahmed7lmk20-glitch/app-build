@@ -24,20 +24,23 @@ jobs:
           channel: 'stable'
 
       - name: Unzip project
-        run: unzip account_recovery_consultant.zip
+        run: |
+          unzip -o account_recovery_consultant.zip -d extracted_app
 
       - name: Install dependencies
         run: |
-          cd account_recovery_consultant || true
+          PROJECT_DIR=$(find extracted_app -name "pubspec.yaml" -exec dirname {} \;)
+          cd "$PROJECT_DIR"
           flutter pub get
 
       - name: Build AAB
         run: |
-          cd account_recovery_consultant || true
+          PROJECT_DIR=$(find extracted_app -name "pubspec.yaml" -exec dirname {} \;)
+          cd "$PROJECT_DIR"
           flutter build appbundle --release --no-codesign
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-aab
-          path: '**/build/app/outputs/bundle/release/app-release.aab'
+          path: extracted_app/**/build/app/outputs/bundle/release/*.aab
