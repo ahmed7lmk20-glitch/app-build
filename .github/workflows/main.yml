@@ -26,18 +26,12 @@ jobs:
         run: |
           unzip -o account_recovery_consultant.zip -d extracted_app
 
-      - name: Force Fix Dependencies & Install
-        run: |
-          PROJECT_DIR=$(find extracted_app -name "pubspec.yaml" -exec dirname {} \;)
-          cd "$PROJECT_DIR"
-          echo -e "\ndependency_overrides:\n  collection: ^1.18.0" >> pubspec.yaml
-          flutter pub get
-
       - name: Build AAB
         run: |
           PROJECT_DIR=$(find extracted_app -name "pubspec.yaml" -exec dirname {} \;)
           cd "$PROJECT_DIR"
-          flutter build appbundle --release --no-codesign
+          flutter pub get
+          flutter build appbundle --release --no-codesign --no-pub
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
